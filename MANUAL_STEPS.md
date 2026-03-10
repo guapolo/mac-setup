@@ -9,7 +9,9 @@ Things that can't be fully automated. Work through this list after running `boot
 - [ ] Authenticate CLI: `op signin`
 
 ## SSH & GitHub
-- [ ] Create or import SSH key via 1Password
+- [ ] `~/.ssh/config` is installed automatically (routes SSH auth through 1Password agent)
+- [ ] Enable SSH agent in 1Password: Settings → Developer → Use the SSH agent
+- [ ] Create or import SSH key in 1Password, then authorize it for GitHub
 - [ ] Add SSH key to GitHub: https://github.com/settings/ssh/new
 - [ ] Test: `ssh -T git@github.com`
 

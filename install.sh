@@ -158,6 +158,26 @@ else
   warn "  cp ~/.p10k.zsh $SETUP_DIR/zsh/.p10k.zsh  (on the source machine)"
 fi
 
+# ── SSH configuration ─────────────────────────────────────────────────────────
+step "Installing SSH configuration"
+
+SSH_DIR="$HOME/.ssh"
+SSH_CONFIG="$SSH_DIR/config"
+if [[ ! -f "$SSH_CONFIG" ]]; then
+  run mkdir -p "$SSH_DIR"
+  run chmod 700 "$SSH_DIR"
+  backup_and_copy "$SETUP_DIR/ssh/config" "$SSH_CONFIG" "~/.ssh/config (1Password SSH agent)"
+  [[ "$DRY_RUN" == false ]] && chmod 600 "$SSH_CONFIG"
+else
+  # Check if 1Password agent is already configured
+  if grep -q "1password" "$SSH_CONFIG" 2>/dev/null; then
+    info "~/.ssh/config already has 1Password agent configured"
+  else
+    warn "~/.ssh/config exists but has no 1Password agent entry — review manually:"
+    warn "  cat $SETUP_DIR/ssh/config"
+  fi
+fi
+
 # ── Git configuration ─────────────────────────────────────────────────────────
 step "Installing git configuration"
 
