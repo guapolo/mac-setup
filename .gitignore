@@ -1,0 +1,13 @@
+# Never commit secrets
+.env
+.env.local
+envrc-templates/*.local.envrc
+
+# Local machine profile overrides
+profiles/*.local.sh
+
+# Claude Code session state
+.claude/
+
+# macOS
+.DS_Store

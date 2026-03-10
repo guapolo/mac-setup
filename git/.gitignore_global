@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Editor
+*~
+*.swp
+*.swo
+.vscode/settings.json.bak
+
+# direnv
+.envrc.local
+
+# GSD / Claude planning (repo-level only, not workspace-level)
+# .planning/    ← intentionally NOT ignored — per-repo planning is fine
+
+# Secrets (safety net — never commit these)
+.env
+.env.local
+.env.*.local

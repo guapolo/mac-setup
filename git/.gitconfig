@@ -1,0 +1,25 @@
+[user]
+  name = Pablo Ruiz
+  email = pruiz@govpilot.com
+
+# Per-workspace identity overrides
+[includeIf "gitdir:~/Dev/pjra/"]
+  path = ~/Dev/pjra/.gitconfig-pjra
+
+[includeIf "gitdir:~/Dev/gup/"]
+  path = ~/Dev/gup/.gitconfig-gup
+
+[includeIf "gitdir:~/Dev/govpilot/"]
+  path = ~/Dev/govpilot/.gitconfig-govpilot
+
+[core]
+  excludesfile = %(prefix)/.gitignore_global
+
+[push]
+  autoSetupRemote = true
+
+[init]
+  defaultBranch = main
+
+[pull]
+  rebase = false

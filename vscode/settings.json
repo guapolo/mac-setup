@@ -1,0 +1,28 @@
+{
+  "workbench.colorTheme": "Cobalt Next Dark",
+  "workbench.sideBar.location": "right",
+  "workbench.startupEditor": "none",
+
+  "editor.renderWhitespace": "all",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.autoSave": "afterDelay",
+
+  "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[json]":  { "editor.defaultFormatter": "vscode.json-language-features" },
+  "[ruby]":  { "editor.defaultFormatter": "rubocop.vscode-rubocop" },
+
+  "rubyLsp.rubyVersionManager": { "identifier": "asdf" },
+
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "github.copilot.advanced": { "authPermissions": "minimal" },
+
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.inheritEnv": true,
+  "terminal.integrated.env.osx": { "PATH": "" },
+  "terminal.integrated.shellIntegration.enabled": false,
+  "terminal.integrated.automationProfile.osx": {
+    "path": "/bin/zsh",
+    "args": ["-il"]
+  }
+}
