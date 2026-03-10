@@ -1,3 +1,6 @@
 [user]
   name = Pablo Ruiz
   email = pablo@gatherup.com
+
+[url "git@github-gup:"]
+  insteadOf = git@github.com:

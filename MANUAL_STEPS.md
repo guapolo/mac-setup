@@ -9,11 +9,23 @@ Things that can't be fully automated. Work through this list after running `boot
 - [ ] Authenticate CLI: `op signin`
 
 ## SSH & GitHub
-- [ ] `~/.ssh/config` is installed automatically (routes SSH auth through 1Password agent)
-- [ ] Enable SSH agent in 1Password: Settings → Developer → Use the SSH agent
-- [ ] Create or import SSH key in 1Password, then authorize it for GitHub
-- [ ] Add SSH key to GitHub: https://github.com/settings/ssh/new
-- [ ] Test: `ssh -T git@github.com`
+`~/.ssh/config` is installed automatically. It defines per-account GitHub host aliases
+(`github-personal`, `github-gup`, `github-govpilot`) so git uses the right key per workspace.
+
+For each GitHub account (repeat 3 times):
+- [ ] In 1Password, open the SSH key item → **Configure SSH Agent** → **Save public key**
+- [ ] Save as `~/.ssh/github_personal.pub` / `~/.ssh/github_gup.pub` / `~/.ssh/github_govpilot.pub`
+- [ ] Add the key to the correct GitHub account: https://github.com/settings/ssh/new
+
+Verify it works per account:
+```bash
+ssh -T git@github-personal   # Hi guapolo!
+ssh -T git@github-gup        # Hi pablo-gus! (or gup account)
+ssh -T git@github-govpilot   # Hi p-ruiz-ab! (or govpilot account)
+```
+
+Once keys are in place, `git clone git@github.com:org/repo.git` inside any `~/Dev/` workspace
+will automatically use the right key — no manual remote URL changes needed.
 
 ## Claude Desktop
 The `claude` cask may not yet be available. If `brew bundle` skipped it:

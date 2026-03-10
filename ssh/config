@@ -1,2 +1,36 @@
+# ~/.ssh/config
+# Uses 1Password SSH agent for all connections.
+# GitHub host aliases let git use the right key per ~/Dev/ workspace.
+
+# ── Default: route everything through 1Password agent ─────────────────────────
 Host *
 	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+# ── GitHub account aliases ─────────────────────────────────────────────────────
+# Each alias points to github.com but uses a specific key from 1Password.
+#
+# Setup (once, per machine):
+#   1. In 1Password, open your SSH key item → "Configure SSH Agent"
+#   2. Click "Save public key" → save to ~/.ssh/github_<account>.pub
+#   3. The IdentityFile below tells SSH (and 1Password) which key to use.
+#
+# Workspace gitconfigs rewrite git@github.com: → git@github-<account>:
+# automatically, so no manual remote URL changes are needed.
+
+Host github-personal
+	HostName github.com
+	User git
+	IdentityFile ~/.ssh/github_personal.pub
+	IdentitiesOnly yes
+
+Host github-gup
+	HostName github.com
+	User git
+	IdentityFile ~/.ssh/github_gup.pub
+	IdentitiesOnly yes
+
+Host github-govpilot
+	HostName github.com
+	User git
+	IdentityFile ~/.ssh/github_govpilot.pub
+	IdentitiesOnly yes
