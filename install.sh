@@ -178,6 +178,54 @@ else
   fi
 fi
 
+# ── SSH public keys from 1Password ────────────────────────────────────────────
+step "Exporting SSH public keys from 1Password"
+
+# Helper: export_ssh_pubkey "ITEM:account[:vault]" output_file label
+export_ssh_pubkey() {
+  local spec="$1" dest="$2" label="$3"
+  local item account vault_arg=""
+
+  item="${spec%%:*}"
+  local rest="${spec#*:}"
+  account="${rest%%:*}"
+  local vault="${rest#*:}"
+  [[ "$vault" != "$rest" ]] && vault_arg="--vault $vault"
+
+  if [[ "$DRY_RUN" == true ]]; then
+    dry "Would export 1Password SSH key '$item' ($account) → $dest"
+    return
+  fi
+
+  if ! cmd_exists op; then
+    warn "1Password CLI (op) not found — skipping SSH key export"
+    return
+  fi
+
+  if ! op account list 2>/dev/null | grep -q "$account"; then
+    warn "1Password account '$account' not signed in — skipping $label"
+    warn "  Sign in with: op signin --account $account"
+    return
+  fi
+
+  local pubkey
+  # shellcheck disable=SC2086
+  pubkey=$(op item get "$item" --account "$account" $vault_arg --fields "public key" 2>&1)
+  if [[ $? -ne 0 || -z "$pubkey" || "$pubkey" == \[ERROR\]* ]]; then
+    warn "Could not retrieve '$item' from 1Password ($account): ${pubkey}"
+    return
+  fi
+
+  mkdir -p "$(dirname "$dest")"
+  echo "$pubkey" > "$dest"
+  chmod 644 "$dest"
+  info "Exported $label → $dest"
+}
+
+[[ -n "${SSH_KEY_PERSONAL:-}" ]] && export_ssh_pubkey "$SSH_KEY_PERSONAL" "$HOME/.ssh/github_personal.pub" "personal (PR)"
+[[ -n "${SSH_KEY_GUP:-}" ]]      && export_ssh_pubkey "$SSH_KEY_GUP"      "$HOME/.ssh/github_gup.pub"      "gup (TRJ)"
+[[ -n "${SSH_KEY_GOVPILOT:-}" ]] && export_ssh_pubkey "$SSH_KEY_GOVPILOT" "$HOME/.ssh/github_govpilot.pub" "govpilot (SDL)"
+
 # ── Git configuration ─────────────────────────────────────────────────────────
 step "Installing git configuration"
 

@@ -9,23 +9,28 @@ Things that can't be fully automated. Work through this list after running `boot
 - [ ] Authenticate CLI: `op signin`
 
 ## SSH & GitHub
-`~/.ssh/config` is installed automatically. It defines per-account GitHub host aliases
-(`github-personal`, `github-gup`, `github-govpilot`) so git uses the right key per workspace.
+`install.sh` handles automatically:
+- Installs `~/.ssh/config` (1Password agent + per-account GitHub host aliases)
+- Exports SSH public keys from 1Password via `op` CLI → `~/.ssh/github_*.pub`
 
-For each GitHub account (repeat 3 times):
-- [ ] In 1Password, open the SSH key item → **Configure SSH Agent** → **Save public key**
-- [ ] Save as `~/.ssh/github_personal.pub` / `~/.ssh/github_gup.pub` / `~/.ssh/github_govpilot.pub`
-- [ ] Add the key to the correct GitHub account: https://github.com/settings/ssh/new
-
-Verify it works per account:
+**Requires:** sign into all three 1Password accounts before running install:
 ```bash
-ssh -T git@github-personal   # Hi guapolo!
-ssh -T git@github-gup        # Hi pablo-gus! (or gup account)
-ssh -T git@github-govpilot   # Hi p-ruiz-ab! (or govpilot account)
+op signin --account ruixes    # personal
+op signin --account gatherup  # gup
+# govpilot keys are also stored in ruixes account
 ```
 
-Once keys are in place, `git clone git@github.com:org/repo.git` inside any `~/Dev/` workspace
-will automatically use the right key — no manual remote URL changes needed.
+After install, add each key to the corresponding GitHub account (one-time, per key):
+- [ ] `~/.ssh/github_personal.pub` → https://github.com/settings/ssh/new (guapolo account)
+- [ ] `~/.ssh/github_gup.pub` → GitHub (pablo-gus / gup account)
+- [ ] `~/.ssh/github_govpilot.pub` → GitHub (p-ruiz-ab / govpilot account)
+
+Verify:
+```bash
+ssh -T git@github-personal   # Hi guapolo!
+ssh -T git@github-gup        # Hi pablo-gus!
+ssh -T git@github-govpilot   # Hi p-ruiz-ab!
+```
 
 ## Claude Desktop
 The `claude` cask may not yet be available. If `brew bundle` skipped it:
